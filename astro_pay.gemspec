@@ -23,6 +23,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "pry"
 
-  spec.add_runtime_dependency('activemodel', ['>= 4.1'])
-  spec.add_runtime_dependency('activesupport', ['>= 4.1'])
+  spec.add_runtime_dependency('activemodel', ['>= 4.0'])
+  spec.add_runtime_dependency('activesupport', ['>= 4.0'])
 end
