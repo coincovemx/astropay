@@ -12,7 +12,13 @@ module AstroPay
     attr_accessor :description, :cpf, :sub_code, :return_url, :confirmation_url
     attr_accessor :response_type
 
-    def initialize(args={})
+    # Creates a new instance of [AstroPay::Direct].
+    #
+    # @param  attributes [Hash] with the following fields: :invoice, :amount,
+    #         :iduser, :bank, :country, :currency, :description, :cpf,
+    #         :sub_code, :return_url, :confirmation_url.
+    # @return [AstroPay::Direct] object.
+    def initialize(args = {})
       config = AstroPay.configuration
 
       @x_login =  config.direct_x_login
@@ -35,6 +41,11 @@ module AstroPay
       }
     end
 
+    # Creates a new transaction.
+    #
+    # @return [Hash] of the response that includes the URL to where an user
+    #         should be redirected to validate and complete the process. If
+    #         there is an error, the [String] response is returned.
     def create
       params_hash = {
         'x_login' => @x_login,
@@ -64,9 +75,13 @@ module AstroPay
       astro_curl(@astro_urls['create'], params_hash)
     end
 
+    # Requests a list of valid banks by country.
+    #
+    # @return [Hash] of the response that includes the list of banks. If there 
+    #         is an error, the [String] response is returned.
     def get_banks_by_country
       params_hash = {
-        #Mandatory
+        # Mandatory
         'x_login' => @x_login,
         'x_trans_key' => @x_trans_key,
         'country_code' => country,
@@ -76,9 +91,13 @@ module AstroPay
       astro_curl(@astro_urls['banks'], params_hash)
     end
 
+    # Requests the status of a transaction.
+    #
+    # @return [Hash] of the response that includes the transaction status. If
+    #         there is an error, the [String] response is returned.
     def get_invoice_status
       params_hash = {
-        #Mandatory
+        # Mandatory
         'x_login' => @x_login_for_webpaystatus,
         'x_trans_key' => @x_trans_key_for_webpaystatus,
         'x_invoice' => invoice,
@@ -88,9 +107,13 @@ module AstroPay
       astro_curl(@astro_urls['status'], params_hash)
     end
 
+    # Requests the exchange rate from USD to the currency of a target country.
+    #
+    # @return [Hash] of the response that includes the exchange rate. If there
+    #         is an error, the [String] response is returned.
     def get_exchange
       params_hash = {
-        #Mandatory
+        # Mandatory
         'x_login' => @x_login_for_webpaystatus,
         'x_trans_key' => @x_trans_key_for_webpaystatus,
         'x_country' => country,
@@ -100,6 +123,12 @@ module AstroPay
       astro_curl(@astro_urls['exchange'], params_hash)
     end
 
+    # Makes a request to the AstroPay API.
+    #
+    # @param  url [String] endpoint for the AstroPay API.
+    # @param  params [Hash] data and options for the request.
+    # @return [Hash] of the successful response or [String] of the response if
+    #         an error rises.
     def astro_curl(url, params_hash)
       AstroPay::Curl.post(url, params_hash)
     end
