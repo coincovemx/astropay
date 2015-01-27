@@ -10,6 +10,10 @@ module AstroPay
     #Optional attributes
     attr_accessor :sandbox, :enable_ssl
 
+    # Creates a new instance of [AstroPay::Configuration].
+    #
+    # @param  attributes [Hash] with the following fields: :error, :message.
+    # @return [AstroPay::Configuration] instance.
     def initialize
       @sandbox = true
       @enable_ssl = true

@@ -1,9 +1,20 @@
 module AstroPay
   class Curl
+
+    # Gets the configuration flag for SSL use with Astropay connections.
+    #
+    # @return [Boolean]
     def self.enable_ssl
       AstroPay.configuration.enable_ssl
     end
 
+    # Performs a POST request to the given URL with the given parameters.
+    # @param  url [String] to where the request will be made.
+    # @param  params_hash [Hash] parameters to be sent with the request.
+    # @return [Hash] of the response or, if an error rises, [String] of
+    #         the response content.
+    # @note   When SSL is enabled, no certificate is actually verified due to
+    #         SSLv3 incompatibilities.
     def self.post(url, params_hash)
       uri = URI.parse(url)
       http = Net::HTTP.new(uri.host, uri.port)
